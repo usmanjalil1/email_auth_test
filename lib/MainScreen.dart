@@ -1,11 +1,19 @@
 import 'package:email_auth_test/AuthController.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:get/get.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   AuthController controller = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
