@@ -1,3 +1,4 @@
+import 'package:email_auth_test/NumberAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'AuthController.dart';
@@ -49,6 +50,25 @@ class RegisterScreen extends StatelessWidget {
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginScreen())),
               child: "Login"
+                  .text
+                  .blue600
+                  .underline
+                  .textStyle(context.captionStyle)
+                  .make(),
+            )
+          ]).centered(),
+          10.heightBox,
+          HStack([
+            "Want to register with number?"
+                .text
+                .black
+                .textStyle(context.captionStyle)
+                .make(),
+            5.widthBox,
+            GestureDetector(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NumberAuth())),
+              child: "click Here"
                   .text
                   .blue600
                   .underline

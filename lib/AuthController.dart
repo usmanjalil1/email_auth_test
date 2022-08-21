@@ -4,9 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
 
+import 'OTPScreen.dart';
+
 class AuthController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   late Rx<User?> _user;
+  late Rx<String> _verificationId;
+
+  String get VerificationId => _verificationId.value;
   @override
   void onReady() {
     super.onReady();
@@ -51,5 +56,32 @@ class AuthController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.TOP);
     }
+  }
+
+  void verifyPhoneNumber(String number) async {
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+92${number}',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential).then(
+          (value) {
+            if (value.user != null) {
+              Get.offAll(() => MainScreen());
+            }
+          },
+        );
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.message);
+      },
+      codeSent: (verificationId, forceResendingToken) {
+        _verificationId = Rx<String>(verificationId);
+        Get.offAll(() => OTPScreen());
+      },
+      codeAutoRetrievalTimeout: (verificationId) {
+        _verificationId = Rx<String>(verificationId);
+        Get.offAll(() => OTPScreen());
+      },
+      timeout: Duration(seconds: 60),
+    );
   }
 }
